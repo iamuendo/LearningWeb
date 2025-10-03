@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tribute to Bruce Schneier</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: gold;
+        color: black;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        background: whitesmoke;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        padding: 2rem;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      header h1 {
+        font-size: 2.5rem;
+        color: black;
+        margin-bottom: 0.2rem;
+      }
+      header h2 {
+        font-size: 2.0rem;
+        color: black;
+        margin-bottom: 0.1rem;
+      }
+      header p {
+        font-size: 1.2rem;
+        color: black;
+        font-style: italic;
+      }
+      .profile-image {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        border: 5px solid gold;
+        object-fit: cover;
+        margin: 1rem auto;
+        display: block;
+      }
+      main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+      @media (max-width: 720px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+      }
+      section {
+        background: #ffffffcc;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+      section h2 {
+        color: black;
+        margin-bottom: 1rem;
+      }
+      section p {
+        margin-bottom: 1rem;
+        color: black;
+      }
+      ul {
+        padding-left: 1.2rem;
+        color: black;
+      }
+      footer {
+        text-align: center;
+        margin-top: 3rem;
+        font-size: 0.9rem;
+        color: Black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" role="main">
+      <header>
+        <h1>A Tribute to Bruce Schneier</h1>
+
+        <img
+          src="/Bruce.jpg"
+          alt="Portrait of Bruce Schneier"
+          class="profile-image"
+        />
+        <h2>Bruce Schneier</h2>
+        <p>Cryptographer, Security Technologist, and Privacy Advocate</p>
+      </header>
+      <main>
+        <section>
+          <h2>About</h2>
+          <p>
+            Bruce Schneier is an internationally renowned security technologist
+            and cryptographer. He has been called a
+            <strong>“security guru”</strong> by The Economist and has authored
+            over a dozen influential books on cryptography, computer security,
+            and privacy.
+          </p>
+          <p>
+            He is an Adjunct Lecturer in Public Policy at the Harvard Kennedy
+            School and a Fellow at the Berkman Klein Center for Internet &
+            Society. His career spans pioneering cryptographic algorithms,
+            security systems, and an authoritative voice on global security
+            issues.
+          </p>
+          <p>
+            Born in 1963 in Brooklyn, New York, Schneier graduated with a
+            physics degree before transitioning to computer science. He
+            revolutionized cryptography education with his 1994 book,
+            <em>Applied Cryptography</em>, which remains a foundational text.
+            Over decades, Schneier has influenced cybersecurity protocols and
+            advocated for privacy rights worldwide.
+          </p>
+        </section>
+        <section>
+          <h2>Contributions</h2>
+          <p>
+            Bruce Schneier’s work spans theoretical cryptography to practical
+            security applications used in everyday technology. His notable
+            creations include:
+          </p>
+          <ul>
+            <li>Blowfish, Twofish, and Threefish block ciphers</li>
+            <li>Fortuna and Yarrow random number generation algorithms</li>
+            <li>Skein hash function</li>
+            <li>Stream ciphers like Solitaire, Phelix, and Helix</li>
+          </ul>
+          <p>
+            He has also advanced security thinking through books like
+            <em>Secrets and Lies</em> and <em>Beyond Fear</em>, helping society
+            navigate digital risks with reason and frameworks for trust.
+          </p>
+          <p>
+            Schneier co-founded Counterpane Internet Security, developed thought
+            leadership on power dynamics in cybersecurity, and continues to
+            serve on advisory boards for major privacy organizations including
+            the Electronic Frontier Foundation and The Tor Project.
+          </p>
+        </section>
+      </main>
+      <footer>
+        <p>BSE-01-0024/2025 Muendo Isaac Maingi | Assignment 1</p>
+      </footer>
+    </div>
+  </body>
+</html>
