@@ -1,0 +1,1036 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Decision-Making Flowchart</title>
+    <style>
+        :root {
+            --primary-dark: #0d2338;
+            --primary: #153e66;
+            --primary-light: #2a5d8f;
+            --secondary: #4c5c6b;
+            --accent: #c0aa83;
+            --light-gray: #e5e8ec;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 20, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            height: 100%;
+            max-height: 700px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 8px;
+            position: relative;
+            margin-right: 10px;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .logo-icon::before, .logo-icon::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-dark);
+        }
+
+        .logo-icon::before {
+            width: 60%;
+            height: 2px;
+            top: 50%;
+            left: 20%;
+            transform: translateY(-50%);
+        }
+
+        .logo-icon::after {
+            width: 2px;
+            height: 60%;
+            left: 50%;
+            top: 20%;
+            transform: translateX(-50%);
+        }
+
+        .logo h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            color: var(--white);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary-dark);
+        }
+
+        .btn-primary:hover {
+            background: #d1bb94;
+        }
+
+        .btn i {
+            font-size: 0.875rem;
+        }
+
+        .flowchart-container {
+            flex: 1;
+            overflow: auto;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px var(--shadow);
+            position: relative;
+        }
+
+        .grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: 20px 20px;
+            background-image: 
+                linear-gradient(to right, rgba(200, 205, 210, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(200, 205, 210, 0.1) 1px, transparent 1px);
+            z-index: 1;
+        }
+
+        .flowchart {
+            position: relative;
+            padding: 2rem;
+            min-width: 600px;
+            min-height: 500px;
+            z-index: 2;
+        }
+
+        .node {
+            position: absolute;
+            width: 180px;
+            background: var(--white);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px var(--shadow);
+            padding: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .node:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .node.expanded {
+            width: 280px;
+            z-index: 10;
+        }
+
+        .node-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .node-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            font-size: 0.75rem;
+            background: var(--light-gray);
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .decision .node-icon {
+            background: var(--primary-light);
+            color: var(--white);
+        }
+
+        .risk .node-icon {
+            background: #e57373;
+            color: var(--white);
+        }
+
+        .outcome .node-icon {
+            background: #81c784;
+            color: var(--white);
+        }
+
+        .node-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+        }
+
+        .node-content {
+            color: var(--secondary);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .node-details {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--light-gray);
+            font-size: 0.75rem;
+            display: none;
+        }
+
+        .expanded .node-details {
+            display: block;
+        }
+
+        .node-metrics {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+            background: var(--light-gray);
+            padding: 0.5rem;
+            border-radius: 4px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--secondary);
+        }
+
+        .connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 100;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--primary-dark) transparent transparent;
+        }
+
+        .node:hover .tooltip {
+            opacity: 1;
+        }
+
+        .node-more {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--light-gray);
+            color: var(--secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .node-more:hover {
+            background: var(--primary-light);
+            color: var(--white);
+        }
+
+        .expanded .node-more {
+            transform: rotate(45deg);
+        }
+
+        .data-panel {
+            position: absolute;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            width: 240px;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px var(--shadow);
+            padding: 1rem;
+            transform: translateY(120%);
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .data-panel.active {
+            transform: translateY(0);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .panel-close {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--light-gray);
+            color: var(--secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .panel-close:hover {
+            background: #e57373;
+            color: var(--white);
+        }
+
+        .panel-content {
+            font-size: 0.8rem;
+            color: var(--secondary);
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            color: var(--secondary);
+        }
+
+        .data-value {
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            left: 1.5rem;
+            bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .zoom-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            box-shadow: 0 2px 8px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .zoom-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(21, 62, 102, 0.2);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.75rem 1.5rem;
+            background: var(--white);
+            color: var(--primary-dark);
+            border-radius: 4px;
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 1000;
+            font-size: 0.875rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 0.5rem;
+            }
+
+            .btn span {
+                display: none;
+            }
+
+            .node {
+                width: 150px;
+            }
+
+            .node.expanded {
+                width: 220px;
+            }
+
+            .data-panel {
+                width: calc(100% - 2rem);
+                left: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <h1>Financial Decision Navigator</h1>
+            </div>
+            <div class="controls">
+                <button class="btn" id="reset-btn">
+                    <i>⟳</i>
+                    <span>Reset</span>
+                </button>
+                <button class="btn btn-primary" id="export-btn">
+                    <i>↓</i>
+                    <span>Export</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="flowchart-container">
+            <div class="grid"></div>
+            <div class="flowchart" id="flowchart">
+                <!-- Nodes will be dynamically generated -->
+            </div>
+            <svg class="connections" id="connections"></svg>
+
+            <div class="zoom-controls">
+                <button class="zoom-btn" id="zoom-in">+</button>
+                <button class="zoom-btn" id="zoom-out">-</button>
+                <button class="zoom-btn" id="zoom-reset">⊙</button>
+            </div>
+
+            <div class="data-panel" id="data-panel">
+                <div class="panel-header">
+                    <span>Node Analysis</span>
+                    <div class="panel-close" id="panel-close">✕</div>
+                </div>
+                <div class="panel-content">
+                    <div class="data-row">
+                        <div class="data-label">Risk Score:</div>
+                        <div class="data-value">78/100</div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-label">Expected Return:</div>
+                        <div class="data-value">12.4%</div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-label">Time Horizon:</div>
+                        <div class="data-value">Medium (3-5y)</div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-label">Volatility:</div>
+                        <div class="data-value">Medium-High</div>
+                    </div>
+                    <div class="data-row">
+                        <div class="data-label">Recommendation:</div>
+                        <div class="data-value">Proceed with Caution</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="notification" id="notification">Report has been exported successfully</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Flowchart data
+            const nodes = [
+                {
+                    id: 1,
+                    type: 'decision',
+                    title: 'Investment Allocation',
+                    content: 'Determine optimal asset allocation based on risk profile and market conditions.',
+                    details: 'Analysis of current market sentiment indicates moderate risk in equity markets with potential upside in tech and healthcare sectors.',
+                    metrics: [
+                        { label: 'Risk', value: 'Medium' },
+                        { label: 'Timeline', value: '1-2 Yrs' }
+                    ],
+                    x: 50,
+                    y: 50,
+                    connections: [2, 3]
+                },
+                {
+                    id: 2,
+                    type: 'decision',
+                    title: 'Risk Assessment',
+                    content: 'Evaluate exposure to market volatility and liquidity constraints.',
+                    details: 'Quantitative analysis shows 68% probability of achieving target returns within acceptable volatility parameters.',
+                    metrics: [
+                        { label: 'Confidence', value: '68%' },
+                        { label: 'Impact', value: 'High' }
+                    ],
+                    x: 300,
+                    y: 50,
+                    connections: [4, 5]
+                },
+                {
+                    id: 3,
+                    type: 'risk',
+                    title: 'Regulatory Compliance',
+                    content: 'Ensure adherence to SEC guidelines and internal governance standards.',
+                    details: 'Recent regulatory changes require enhanced disclosure for alternative investments. Compliance deadline: End of Q2.',
+                    metrics: [
+                        { label: 'Status', value: 'Review' },
+                        { label: 'Deadline', value: 'Q2 End' }
+                    ],
+                    x: 50,
+                    y: 200,
+                    connections: [6]
+                },
+                {
+                    id: 4,
+                    type: 'risk',
+                    title: 'Market Volatility',
+                    content: 'Evaluate potential impact of current market conditions on portfolio.',
+                    details: 'VIX currently at 22.4, indicating moderate market anxiety. Recommend implementing hedging strategies for downside protection.',
+                    metrics: [
+                        { label: 'VIX', value: '22.4' },
+                        { label: 'Trend', value: 'Rising' }
+                    ],
+                    x: 300,
+                    y: 200,
+                    connections: [7]
+                },
+                {
+                    id: 5,
+                    type: 'decision',
+                    title: 'Liquidity Analysis',
+                    content: 'Assess cash requirements against investment timeline.',
+                    details: 'Cash flow projections indicate sufficient liquidity for next 8 months. Consider maintaining 15% in short-term instruments.',
+                    metrics: [
+                        { label: 'Cash', value: '15%' },
+                        { label: 'Coverage', value: '8 Mos' }
+                    ],
+                    x: 450,
+                    y: 150,
+                    connections: [7]
+                },
+                {
+                    id: 6,
+                    type: 'outcome',
+                    title: 'Conservative Strategy',
+                    content: 'Emphasis on capital preservation with moderate income generation.',
+                    details: 'Recommended allocation: 40% bonds, 25% blue-chip equities, 20% alternatives, 15% cash equivalents.',
+                    metrics: [
+                        { label: 'Yield', value: '4.2%' },
+                        { label: 'Risk', value: 'Low' }
+                    ],
+                    x: 150,
+                    y: 350,
+                    connections: []
+                },
+                {
+                    id: 7,
+                    type: 'outcome',
+                    title: 'Balanced Growth',
+                    content: 'Blended approach balancing growth opportunities with downside protection.',
+                    details: 'Recommended allocation: 50% equities (with sector tilts), 30% fixed income, 15% alternatives, 5% cash.',
+                    metrics: [
+                        { label: 'Yield', value: '6.8%' },
+                        { label: 'Risk', value: 'Medium' }
+                    ],
+                    x: 400,
+                    y: 350,
+                    connections: []
+                }
+            ];
+
+            // Initialize flowchart
+            const flowchart = document.getElementById('flowchart');
+            const connectionsElem = document.getElementById('connections');
+            const loading = document.getElementById('loading');
+            const dataPanel = document.getElementById('data-panel');
+            const notification = document.getElementById('notification');
+            let scale = 1;
+            let offsetX = 0;
+            let offsetY = 0;
+            let isDragging = false;
+            let startX, startY;
+
+            // Create nodes and connections
+            function renderFlowchart() {
+                // Clear existing elements
+                flowchart.innerHTML = '';
+                connectionsElem.innerHTML = '';
+
+                // Create nodes
+                nodes.forEach(node => {
+                    const nodeElem = document.createElement('div');
+                    nodeElem.className = `node ${node.type}`;
+                    nodeElem.dataset.id = node.id;
+                    nodeElem.style.left = `${node.x + offsetX}px`;
+                    nodeElem.style.top = `${node.y + offsetY}px`;
+
+                    // Create tooltip
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = `Decision Node ${node.id}: ${node.title}`;
+                    nodeElem.appendChild(tooltip);
+
+                    // Node header
+                    const nodeHeader = document.createElement('div');
+                    nodeHeader.className = 'node-header';
+                    
+                    const nodeIcon = document.createElement('div');
+                    nodeIcon.className = 'node-icon';
+                    nodeIcon.textContent = node.id;
+                    nodeHeader.appendChild(nodeIcon);
+                    
+                    const nodeTitle = document.createElement('div');
+                    nodeTitle.className = 'node-title';
+                    nodeTitle.textContent = node.title;
+                    nodeHeader.appendChild(nodeTitle);
+                    
+                    nodeElem.appendChild(nodeHeader);
+
+                    // Node content
+                    const nodeContent = document.createElement('div');
+                    nodeContent.className = 'node-content';
+                    nodeContent.textContent = node.content;
+                    nodeElem.appendChild(nodeContent);
+
+                    // Node expand button
+                    const nodeMore = document.createElement('div');
+                    nodeMore.className = 'node-more';
+                    nodeMore.textContent = '+';
+                    nodeElem.appendChild(nodeMore);
+
+                    // Node details (initially hidden)
+                    const nodeDetails = document.createElement('div');
+                    nodeDetails.className = 'node-details';
+                    
+                    const nodeDetailText = document.createElement('p');
+                    nodeDetailText.textContent = node.details;
+                    nodeDetails.appendChild(nodeDetailText);
+                    
+                    // Metrics
+                    const nodeMetrics = document.createElement('div');
+                    nodeMetrics.className = 'node-metrics';
+                    
+                    node.metrics.forEach(metric => {
+                        const metricElem = document.createElement('div');
+                        metricElem.className = 'metric';
+                        
+                        const metricValue = document.createElement('div');
+                        metricValue.className = 'metric-value';
+                        metricValue.textContent = metric.value;
+                        metricElem.appendChild(metricValue);
+                        
+                        const metricLabel = document.createElement('div');
+                        metricLabel.className = 'metric-label';
+                        metricLabel.textContent = metric.label;
+                        metricElem.appendChild(metricLabel);
+                        
+                        nodeMetrics.appendChild(metricElem);
+                    });
+                    
+                    nodeDetails.appendChild(nodeMetrics);
+                    nodeElem.appendChild(nodeDetails);
+
+                    // Add event listener for expand/collapse
+                    nodeMore.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        nodeElem.classList.toggle('expanded');
+                        renderConnections(); // Re-render connections when node size changes
+                    });
+
+                    // Add event listener for node click (show data panel)
+                    nodeElem.addEventListener('click', () => {
+                        dataPanel.classList.add('active');
+                    });
+                    
+                    flowchart.appendChild(nodeElem);
+                });
+
+                renderConnections();
+            }
+
+            // Draw connections between nodes
+            function renderConnections() {
+                connectionsElem.innerHTML = '';
+
+                nodes.forEach(node => {
+                    if (!node.connections || node.connections.length === 0) return;
+
+                    const sourceElem = document.querySelector(`.node[data-id="${node.id}"]`);
+                    if (!sourceElem) return;
+
+                    const sourceRect = sourceElem.getBoundingClientRect();
+                    const flowchartRect = flowchart.getBoundingClientRect();
+
+                    node.connections.forEach(targetId => {
+                        const targetElem = document.querySelector(`.node[data-id="${targetId}"]`);
+                        if (!targetElem) return;
+
+                        const targetRect = targetElem.getBoundingClientRect();
+
+                        // Calculate positions relative to the SVG
+                        const x1 = sourceRect.left + sourceRect.width / 2 - flowchartRect.left;
+                        const y1 = sourceRect.top + sourceRect.height - flowchartRect.top;
+                        const x2 = targetRect.left + targetRect.width / 2 - flowchartRect.left;
+                        const y2 = targetRect.top - flowchartRect.top;
+
+                        // Create path with bezier curve
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        const midY = y1 + (y2 - y1) * 0.5;
+                        const d = `M${x1},${y1} C${x1},${midY} ${x2},${midY} ${x2},${y2}`;
+                        
+                        path.setAttribute('d', d);
+                        path.setAttribute('stroke', '#4c5c6b');
+                        path.setAttribute('stroke-width', '2');
+                        path.setAttribute('fill', 'none');
+                        path.setAttribute('stroke-dasharray', '0');
+                        path.setAttribute('marker-end', 'url(#arrow)');
+
+                        // Create arrow marker if it doesn't exist
+                        let marker = document.getElementById('arrow');
+                        if (!marker) {
+                            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                            marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+                            marker.setAttribute('id', 'arrow');
+                            marker.setAttribute('viewBox', '0 0 10 10');
+                            marker.setAttribute('refX', '5');
+                            marker.setAttribute('refY', '5');
+                            marker.setAttribute('markerWidth', '6');
+                            marker.setAttribute('markerHeight', '6');
+                            marker.setAttribute('orient', 'auto-start-reverse');
+
+                            const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                            arrow.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+                            arrow.setAttribute('fill', '#4c5c6b');
+                            
+                            marker.appendChild(arrow);
+                            defs.appendChild(marker);
+                            connectionsElem.appendChild(defs);
+                        }
+
+                        connectionsElem.appendChild(path);
+
+                        // Animate the connection
+                        const length = path.getTotalLength();
+                        path.setAttribute('stroke-dasharray', length);
+                        path.setAttribute('stroke-dashoffset', length);
+                        
+                        setTimeout(() => {
+                            path.style.transition = 'stroke-dashoffset 1s ease-in-out';
+                            path.setAttribute('stroke-dashoffset', '0');
+                        }, 100);
+                    });
+                });
+            }
+
+            // Initialize zoom and pan functionality
+            function initZoomPan() {
+                const zoomIn = document.getElementById('zoom-in');
+                const zoomOut = document.getElementById('zoom-out');
+                const zoomReset = document.getElementById('zoom-reset');
+
+                zoomIn.addEventListener('click', () => {
+                    scale += 0.1;
+                    applyTransform();
+                });
+
+                zoomOut.addEventListener('click', () => {
+                    scale = Math.max(0.5, scale - 0.1);
+                    applyTransform();
+                });
+
+                zoomReset.addEventListener('click', () => {
+                    scale = 1;
+                    offsetX = 0;
+                    offsetY = 0;
+                    applyTransform();
+                });
+
+                // Enable dragging the flowchart
+                flowchart.addEventListener('mousedown', (e) => {
+                    if (e.target === flowchart || e.target.classList.contains('grid')) {
+                        isDragging = true;
+                        startX = e.clientX;
+                        startY = e.clientY;
+                        flowchart.style.cursor = 'grabbing';
+                    }
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+                    
+                    offsetX += dx / scale;
+                    offsetY += dy / scale;
+                    
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    
+                    applyTransform();
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    flowchart.style.cursor = 'default';
+                });
+
+                // Touch support
+                flowchart.addEventListener('touchstart', (e) => {
+                    if (e.target === flowchart || e.target.classList.contains('grid')) {
+                        isDragging = true;
+                        startX = e.touches[0].clientX;
+                        startY = e.touches[0].clientY;
+                    }
+                });
+
+                document.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    
+                    const dx = e.touches[0].clientX - startX;
+                    const dy = e.touches[0].clientY - startY;
+                    
+                    offsetX += dx / scale;
+                    offsetY += dy / scale;
+                    
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                    
+                    applyTransform();
+                });
+
+                document.addEventListener('touchend', () => {
+                    isDragging = false;
+                });
+            }
+
+            // Apply zoom and pan transformations
+            function applyTransform() {
+                flowchart.style.transform = `scale(${scale})`;
+                nodes.forEach(node => {
+                    const nodeElem = document.querySelector(`.node[data-id="${node.id}"]`);
+                    if (nodeElem) {
+                        nodeElem.style.left = `${node.x + offsetX}px`;
+                        nodeElem.style.top = `${node.y + offsetY}px`;
+                    }
+                });
+                renderConnections();
+            }
+
+            // Initialize data panel functionality
+            function initDataPanel() {
+                const panelClose = document.getElementById('panel-close');
+                
+                panelClose.addEventListener('click', () => {
+                    dataPanel.classList.remove('active');
+                });
+            }
+
+            // Initialize export functionality
+            function initExport() {
+                const exportBtn = document.getElementById('export-btn');
+                
+                exportBtn.addEventListener('click', () => {
+                    loading.style.display = 'flex';
+                    
+                    // Simulate export process
+                    setTimeout(() => {
+                        loading.style.display = 'none';
+                        notification.classList.add('show');
+                        
+                        setTimeout(() => {
+                            notification.classList.remove('show');
+                        }, 3000);
+                    }, 1500);
+                });
+            }
+
+            // Initialize reset functionality
+            function initReset() {
+                const resetBtn = document.getElementById('reset-btn');
+                
+                resetBtn.addEventListener('click', () => {
+                    scale = 1;
+                    offsetX = 0;
+                    offsetY = 0;
+                    applyTransform();
+                    
+                    // Reset expanded nodes
+                    document.querySelectorAll('.node.expanded').forEach(node => {
+                        node.classList.remove('expanded');
+                    });
+                    
+                    // Close data panel
+                    dataPanel.classList.remove('active');
+                });
+            }
+
+            // Initialize application
+            function init() {
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    renderFlowchart();
+                    initZoomPan();
+                    initDataPanel();
+                    initExport();
+                    initReset();
+                }, 1000);
+            }
+
+            init();
+
+            // Resize handler
+            window.addEventListener('resize', renderConnections);
+        });
+    </script>
+</body>
+</html>
